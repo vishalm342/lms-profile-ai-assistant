@@ -5,8 +5,9 @@ const { askAgent } = require('../services/agent.service');
 router.post('/', async (req, res) => {
     const { message, studentId } = req.body;
 
-    if (!message) {
-        return res.status(400).json({ error: "Message is required." });
+    // SECURE: Strictly require both message AND studentId
+    if (!message || !studentId) {
+        return res.status(400).json({ error: "Both message and valid studentId are required." });
     }
 
     try {
