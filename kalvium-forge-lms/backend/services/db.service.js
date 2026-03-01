@@ -5,13 +5,18 @@ const { promisify } = require('util');
 // Ensure this matches the exact name of your database file
 const dbPath = path.resolve(__dirname, '../kalviumlabs_forge.sqlite');
 
-const db = new sqlite3.Database(dbPath, (err) => {
-    if (err) {
-        console.error('❌ Database connection error:', err.message);
-    } else {
-        console.log('✅ Connected to kalviumlabs_forge.sqlite');
+// Explicitly open in read-write mode (+ create if missing) to prevent SQLITE_READONLY errors
+const db = new sqlite3.Database(
+    dbPath,
+    sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
+    (err) => {
+        if (err) {
+            console.error('❌ Database connection error:', err.message);
+        } else {
+            console.log('✅ Connected to kalviumlabs_forge.sqlite (read-write)');
+        }
     }
-});
+);
 
 // Wrap sqlite3 methods in promises so we can use async/await in our routes
 module.exports = {
