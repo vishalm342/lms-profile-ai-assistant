@@ -54,6 +54,34 @@ router.post('/login', async (req, res) => {
             message: 'Internal server error.'
         });
     }
+
+    // POST: Register a new student
+router.post('/register', async (req, res) => {
+    const { full_name, email, password, phone, date_of_birth, city } = req.body;
+    const db = require('../services/db.service'); // Ensure db is required at the top of your file
+
+    if (!full_name || !email || !password) {
+        return res.status(400).json({ error: "Name, email, and password are required." });
+    }
+
+    try {
+        const existingUser = await db.all(`SELECT id FROM students WHERE email = '${email}'`);
+        if (existingUser.length > 0) {
+            return res.status(409).json({ error: "Email already in use." });
+        }
+
+        const insertQuery = `
+            INSERT INTO students (full_name, email, password, phone, date_of_birth, city) 
+            VALUES ('${full_name}', '${email}', '${password}', '${phone || ''}', '${date_of_birth || ''}', '${city || ''}')
+        `;
+        
+        await db.run(insertQuery);
+        res.status(201).json({ success: true, message: "Student registered successfully." });
+    } catch (error) {
+        console.error("Registration Error:", error);
+        res.status(500).json({ error: "Failed to register student." });
+    }
+});
 });
 
 module.exports = router;
