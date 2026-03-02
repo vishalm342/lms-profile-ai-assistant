@@ -1,8 +1,16 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import axios from "axios";
-import { Send, Bot, MoreVertical, User } from "lucide-react";
+import { Send, Bot, User, Trash2 } from "lucide-react";
+
+const CHAT_STORAGE_KEY = (id) => `forge_chat_history_${id}`;
+
+const WELCOME_MSG = {
+  id: "welcome",
+  role: "ai",
+  text: "Hi! I'm your Forge AI Assistant. Ask me anything about your profile or courses — I can also update your details for you.",
+};
 
 function TypingIndicator() {
   return (
@@ -58,17 +66,48 @@ function Message({ msg }) {
 }
 
 export default function ChatWidget({ fetchProfile, studentId }) {
-  const [messages, setMessages] = useState([
-    {
-      id: "welcome",
-      role: "ai",
-      text: "Hi! I'm your Forge AI Assistant. Ask me anything about your profile or courses — I can also update your details for you.",
-    },
-  ]);
+  const [messages, setMessages] = useState([WELCOME_MSG]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
+  const didLoadRef = useRef(false);
+
+  // Load persisted history when studentId is known
+  useEffect(() => {
+    if (!studentId || didLoadRef.current) return;
+    function loadHistory() {
+      const raw = localStorage.getItem(CHAT_STORAGE_KEY(studentId));
+      if (!raw) return;
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setMessages(parsed);
+        }
+      } catch {
+        // corrupted storage — ignore and keep welcome message
+      }
+    }
+    loadHistory();
+    didLoadRef.current = true;
+  }, [studentId]);
+
+  // Persist messages to localStorage on every change (skip lone welcome msg)
+  useEffect(() => {
+    if (!studentId) return;
+    if (messages.length === 1 && messages[0].id === "welcome") return;
+    function persistHistory() {
+      localStorage.setItem(CHAT_STORAGE_KEY(studentId), JSON.stringify(messages));
+    }
+    persistHistory();
+  }, [messages, studentId]);
+
+  const clearHistory = useCallback(() => {
+    if (!studentId) return;
+    localStorage.removeItem(CHAT_STORAGE_KEY(studentId));
+    didLoadRef.current = false;
+    setMessages([WELCOME_MSG]);
+  }, [studentId]);
 
   // Auto-scroll to bottom whenever messages change
   useEffect(() => {
@@ -136,8 +175,15 @@ export default function ChatWidget({ fetchProfile, studentId }) {
             AI Powered System
           </p>
         </div>
-        <button className="text-gray-400 hover:text-gray-600 transition-colors">
-          <MoreVertical size={18} />
+        <button
+          onClick={() => {
+            if (studentId) localStorage.removeItem(CHAT_STORAGE_KEY(studentId));
+            setMessages([WELCOME_MSG]);
+          }}
+          title="Clear chat history"
+          className="text-gray-400 hover:text-red-500 transition-colors"
+        >
+          <Trash2 size={16} />
         </button>
       </div>
 
