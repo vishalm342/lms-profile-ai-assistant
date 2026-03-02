@@ -28,7 +28,8 @@ export default function DashboardPage() {
     const id = localStorage.getItem("studentId");
     if (!id || id === "undefined" || id === "null") return;
     try {
-      const res = await axios.get(`http://localhost:5000/api/profile/${id}`);
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const res = await axios.get(`${apiUrl}/api/profile/${id}`);
       if (res.data.success) {
         setProfileData(res.data.profile);
       }

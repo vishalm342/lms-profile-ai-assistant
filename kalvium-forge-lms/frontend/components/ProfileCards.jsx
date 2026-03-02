@@ -169,8 +169,9 @@ export default function ProfileCards({ profileData, loading, studentId, onUpdate
     setSaving(true);
     setSaveError("");
     try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
       const res = await axios.put(
-        `http://localhost:5000/api/profile/${studentId}`,
+        `${apiUrl}/api/profile/${studentId}`,
         formData
       );
       if (res.data.success) {
@@ -190,8 +191,9 @@ export default function ProfileCards({ profileData, loading, studentId, onUpdate
     if (!window.confirm("Remove this course from your profile?")) return;
     setDeletingCourseId(courseId);
     try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
       await axios.delete(
-        `http://localhost:5000/api/profile/${studentId}/course/${courseId}`
+        `${apiUrl}/api/profile/${studentId}/course/${courseId}`
       );
       if (onUpdate) onUpdate();
     } catch (err) {
@@ -204,8 +206,9 @@ export default function ProfileCards({ profileData, loading, studentId, onUpdate
   async function handleToggleCourse(courseId) {
     setTogglingCourseId(courseId);
     try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
       await axios.put(
-        `http://localhost:5000/api/profile/${studentId}/course/${courseId}/toggle`
+        `${apiUrl}/api/profile/${studentId}/course/${courseId}/toggle`
       );
       if (onUpdate) onUpdate();
     } catch (err) {
@@ -347,8 +350,9 @@ export default function ProfileCards({ profileData, loading, studentId, onUpdate
                 setAddingCourse(true);
                 setCourseError("");
                 try {
+                  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
                   await axios.post(
-                    `http://localhost:5000/api/profile/${studentId}/course`,
+                    `${apiUrl}/api/profile/${studentId}/course`,
                     { course_name: newCourse.name, duration: newCourse.duration, fee: newCourse.fee }
                   );
                   setIsCourseModalOpen(false);
