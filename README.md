@@ -1,39 +1,53 @@
-# Kalvium Forge - AI-Powered LMS Profile Assistant
+# Kalvium Forge – AI-Powered LMS Profile Assistant
 
-**Live Demo:** [https://lms-profile-ai-assistant.vercel.app/](https://lms-profile-ai-assistant.vercel.app/)
-**Backend API:** [https://lms-profile-ai-assistant.onrender.com/](https://lms-profile-ai-assistant.onrender.com/)
+An AI-enabled Learning Management System (LMS) dashboard that lets students manage their academic profile and course applications using a natural-language assistant, with real-time UI sync.
 
-An intelligent Learning Management System (LMS) dashboard that allows students to manage their academic profiles and course enrollments through a natural language AI interface and a real-time synchronized UI.
+## Submission Artifacts
+- **GitHub Repo**: https://github.com/vishalm342/lms-profile-ai-assistant
+- **Figma Design**: <ADD_FIGMA_LINK_HERE>
+- **Deployed (Frontend)**: https://lms-profile-ai-assistant.vercel.app/
+- **Deployed (Backend API)**: https://lms-profile-ai-assistant.onrender.com/
+- **Low-Level Design Doc (LLD)**: [LLD.md](./LLD.md)
 
-## 🚀 Features
-- **AI-Powered Profile Management**: Update your location, contact details, or education history just by chatting with the Forge AI Assistant.
-- **Real-Time UI Synchronization**: The dashboard UI automatically refreshes when the AI agent modifies the backend database.
-- **Manual CRUD Operations**: Full control to manually Add, Toggle Status (Active/Completed), and Delete courses through a modal-driven workflow.
-- **Premium SaaS UI**: A high-fidelity, light-themed landing page and dashboard built with Tailwind CSS.
-- **Secure Backend**: Node.js Express server with SQLite persistence and strict database-level CHECK constraints.
+## Features
+- **AI-Powered Profile Management**: Update location, contact details, or education history by chatting with the assistant.
+- **Real-Time UI Synchronization**: UI refreshes automatically when the AI agent updates the database.
+- **Manual CRUD for Courses**: Add courses, toggle status (Active/Completed), and delete courses.
+- **Premium SaaS UI**: Light-themed landing page + dashboard built with Tailwind CSS.
+- **Secure Backend**: Express + SQLite with strict `CHECK` constraints.
 
-## 🛠️ Tech Stack
+## Tech Stack
 - **Frontend**: Next.js 15, Tailwind CSS, Lucide React, Axios
 - **Backend**: Node.js, Express.js, SQLite3
-- **AI Integration**: Google Gemini API via custom multi-agent orchestration
-- **Deployment**: Vercel (Frontend) and Render (Backend)
+- **AI**: Google Gemini API (custom multi-agent orchestration)
+- **Deployment**: Vercel (Frontend) + Render (Backend)
 
-## 🚦 Getting Started
+## Getting Started
 
-### 1. Prerequisites
-- Node.js (v18 or higher)
-- A Google Gemini API Key
+### Prerequisites
+- Node.js v18+
+- Google Gemini API key
 
-## 🚦 Getting Started
-1. **Clone the repo**: `git clone <repo-url>`
-2. **Setup Backend**:
-   - `cd backend`
-   - `npm install`
-   - `node server.js`
-3. **Setup Frontend**:
-   - `cd frontend`
-   - `npm install`
-   - `npm run dev`
+### Run Locally
+1. **Clone**
+   ```bash
+   git clone https://github.com/vishalm342/lms-profile-ai-assistant.git
+   cd lms-profile-ai-assistant
+   ```
 
-📄 License
-This project was developed as part of the Kalvium Forge Hackathon.
+2. **Backend**
+   ```bash
+   cd backend
+   npm install
+   node server.js
+   ```
+
+3. **Frontend**
+   ```bash
+   cd ../frontend
+   npm install
+   npm run dev
+   ```
+
+## License
+Developed as part of the Kalvium Forge Hackathon.
