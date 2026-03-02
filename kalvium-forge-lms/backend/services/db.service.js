@@ -14,6 +14,11 @@ const db = new sqlite3.Database(
             console.error('❌ Database connection error:', err.message);
         } else {
             console.log('✅ Connected to kalviumlabs_forge.sqlite (read-write)');
+            // Enable WAL mode for better concurrent access and set a 5s busy timeout
+            db.serialize(() => {
+                db.run('PRAGMA journal_mode = WAL;');
+                db.run('PRAGMA busy_timeout = 5000;');
+            });
         }
     }
 );

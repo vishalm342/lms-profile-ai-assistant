@@ -23,25 +23,18 @@ router.post('/login', async (req, res) => {
 
         // Check if student exists
         if (!student) {
-            return res.status(401).json({
-                success: false,
-                message: 'Invalid email or password.'
-            });
+            return res.status(401).json({ error: 'Invalid email or password.' });
         }
 
         // Raw text comparison (no bcrypt for this boilerplate)
         if (student.password !== password) {
-            return res.status(401).json({
-                success: false,
-                message: 'Invalid email or password.'
-            });
+            return res.status(401).json({ error: 'Invalid email or password.' });
         }
 
         // Credentials match — return success with user info
         return res.status(200).json({
             success: true,
-            message: 'Login successful.',
-            user: {
+            student: {
                 id: student.id,
                 full_name: student.full_name
             }
@@ -50,8 +43,7 @@ router.post('/login', async (req, res) => {
     } catch (err) {
         console.error('❌ Login error:', err.message);
         return res.status(500).json({
-            success: false,
-            message: 'Internal server error.'
+            error: 'Internal server error.'
         });
     }
 });
@@ -80,6 +72,16 @@ router.post('/register', async (req, res) => {
 
         // SECURE: Executing with params array
         await db.run(insertQuery, params);
+
+        // Auto-create a blank education_details row so profile JOIN never fails
+        const newStudent = await db.get('SELECT id FROM students WHERE email = ?', [email]);
+        if (newStudent) {
+            await db.run(
+                `INSERT OR IGNORE INTO education_details (student_id, tenth_board, tenth_percentage, twelfth_board, twelfth_percentage)
+                 VALUES (?, '', 0, '', 0)`,
+                [newStudent.id]
+            );
+        }
 
         res.status(201).json({ success: true, message: "Student registered successfully." });
     } catch (error) {
