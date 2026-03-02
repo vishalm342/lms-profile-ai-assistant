@@ -3,11 +3,9 @@
 An AI-enabled Learning Management System (LMS) dashboard that lets students manage their academic profile and course applications using a natural-language assistant, with real-time UI sync.
 
 ## Submission Artifacts
-- **GitHub Repo**: https://github.com/vishalm342/lms-profile-ai-assistant
-- **Figma Design**: <ADD_FIGMA_LINK_HERE>
+- **Figma Design**: https://www.figma.com/design/MOZOAbrTfwPWk3Et0XJr2N/AI-Chatbot-KalviumLabs?node-id=0-1&t=T4hZZERgIH1HRxNA-1
 - **Deployed (Frontend)**: https://lms-profile-ai-assistant.vercel.app/
 - **Deployed (Backend API)**: https://lms-profile-ai-assistant.onrender.com/
-- **Low-Level Design Doc (LLD)**: [LLD.md](./LLD.md)
 
 ## Features
 - **AI-Powered Profile Management**: Update location, contact details, or education history by chatting with the assistant.
