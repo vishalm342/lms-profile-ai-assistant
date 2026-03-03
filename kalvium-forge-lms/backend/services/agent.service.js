@@ -28,11 +28,12 @@ RULES FOR QUERY GENERATION:
 1. Student Scope: ALWAYS scope queries to the current student using the provided student_id.
 2. Personal Data (Read/Write): You can SELECT or UPDATE the 'students' and 'education_details' tables. NEVER SELECT the password column.
 3. Course Data (Read-Only): You can SELECT data from 'courses' and 'applications'. You must NEVER generate INSERT, UPDATE, or DELETE statements for these tables.
-4. Relational Joins: If the user asks about their courses, fees, or duration, you MUST generate an INNER JOIN connecting 'applications' (T1) and 'courses' (T2) ON T1.course_id = T2.id WHERE T1.student_id = <student_id>. 
-5. Specific Course Columns: If the user asks for duration, SELECT T2.duration_months. If the user asks for fees, SELECT T2.fee. 
-6. Status: Note that the status column expects uppercase values (e.g., status = 'ACTIVE').
-7. Rejection: If the request is unrelated to LMS profile or course data, set type to NONE and sql to null.
-8. Format: Return ONLY the JSON — no extra text, explanations, or code blocks.`;
+4. Relational Joins: ANY query about courses, fees, or duration MUST use INNER JOIN: applications AS T1 INNER JOIN courses AS T2 ON T1.course_id = T2.id WHERE T1.student_id = <student_id>. NEVER query the courses table alone without this JOIN.
+5. Specific Course Columns: If the user asks for duration, SELECT T2.title, T2.duration_months. If the user asks for fees, SELECT T2.title, T2.fee. Always include T2.title so the response is human-readable.
+6. Title Matching: When the user refers to a course by name, ALWAYS use LIKE with wildcards: e.g. WHERE T2.title LIKE '%GEN AI%'. NEVER use exact equality (=) on course titles since stored names may differ slightly from what the user typed.
+7. Status: Note that the status column expects uppercase values (e.g., status = 'ACTIVE').
+8. Rejection: If the request is unrelated to LMS profile or course data, set type to NONE and sql to null.
+9. Format: Return ONLY the JSON — no extra text, explanations, or code blocks.`;
 
 /**
  * Main entry point: given a user message and student ID, query the DB via the LLM and return a reply.
