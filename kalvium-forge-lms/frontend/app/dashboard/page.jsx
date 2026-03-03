@@ -15,21 +15,31 @@ export default function DashboardPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const id = localStorage.getItem("studentId");
-    if (!id || id === "undefined" || id === "null") {
+    const token = localStorage.getItem("token");
+    if (!token) {
       localStorage.clear();
       router.push("/login");
       return;
     }
-    setStudentId(id);
+    try {
+      // Decode JWT payload (base64) to extract studentId — no extra package needed
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      setStudentId(payload.id);
+    } catch {
+      localStorage.clear();
+      router.push("/login");
+    }
   }, [router]);
 
   const fetchProfile = useCallback(async () => {
+    const token = localStorage.getItem("token");
     const id = localStorage.getItem("studentId");
-    if (!id || id === "undefined" || id === "null") return;
+    if (!token || !id || id === "undefined" || id === "null") return;
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-      const res = await axios.get(`${apiUrl}/api/profile/${id}`);
+      const res = await axios.get(`${apiUrl}/api/profile/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (res.data.success) {
         setProfileData(res.data.profile);
       }
