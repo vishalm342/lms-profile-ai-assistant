@@ -170,9 +170,11 @@ export default function ProfileCards({ profileData, loading, studentId, onUpdate
     setSaveError("");
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const token = localStorage.getItem('token');
       const res = await axios.put(
         `${apiUrl}/api/profile/${studentId}`,
-        formData
+        formData,
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (res.data.success) {
         setIsEditModalOpen(false);
@@ -192,8 +194,10 @@ export default function ProfileCards({ profileData, loading, studentId, onUpdate
     setDeletingCourseId(courseId);
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const token = localStorage.getItem('token');
       await axios.delete(
-        `${apiUrl}/api/profile/${studentId}/course/${courseId}`
+        `${apiUrl}/api/profile/${studentId}/course/${courseId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (onUpdate) onUpdate();
     } catch (err) {
@@ -207,8 +211,11 @@ export default function ProfileCards({ profileData, loading, studentId, onUpdate
     setTogglingCourseId(courseId);
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const token = localStorage.getItem('token');
       await axios.put(
-        `${apiUrl}/api/profile/${studentId}/course/${courseId}/toggle`
+        `${apiUrl}/api/profile/${studentId}/course/${courseId}/toggle`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (onUpdate) onUpdate();
     } catch (err) {
@@ -351,9 +358,11 @@ export default function ProfileCards({ profileData, loading, studentId, onUpdate
                 setCourseError("");
                 try {
                   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+                  const token = localStorage.getItem('token');
                   await axios.post(
                     `${apiUrl}/api/profile/${studentId}/course`,
-                    { course_name: newCourse.name, duration: newCourse.duration, fee: newCourse.fee }
+                    { course_name: newCourse.name, duration: newCourse.duration, fee: newCourse.fee },
+                    { headers: { Authorization: `Bearer ${token}` } }
                   );
                   setIsCourseModalOpen(false);
                   setNewCourse({ name: "", duration: "", fee: "" });
