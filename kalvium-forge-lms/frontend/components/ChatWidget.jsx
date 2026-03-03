@@ -126,9 +126,12 @@ export default function ChatWidget({ fetchProfile, studentId }) {
 
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const token = localStorage.getItem('token');
       const res = await axios.post(`${apiUrl}/api/chat`, {
         message: text,
         studentId: studentId ?? localStorage.getItem("studentId"),
+      }, {
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       const aiMsg = {

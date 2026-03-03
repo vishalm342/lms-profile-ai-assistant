@@ -36,6 +36,7 @@ export default function LoginPage() {
         password: loginPassword,
       });
       if (response.data.success) {
+        localStorage.setItem('token', response.data.token);
         localStorage.setItem('studentId', response.data.student.id);
         localStorage.setItem('studentName', response.data.student.full_name);
         router.push('/dashboard');
