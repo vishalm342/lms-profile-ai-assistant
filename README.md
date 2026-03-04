@@ -10,6 +10,7 @@ An AI-enabled Learning Management System (LMS) dashboard that lets students mana
 ## Features
 - **AI-Powered Profile Management**: Update location, contact details, or education history by chatting with the assistant.
 - **Real-Time UI Synchronization**: UI refreshes automatically when the AI agent updates the database.
+- **Secure Authentication**: Enterprise-grade security using **JWT (JSON Web Tokens)** for session management and **Bcrypt** for password hashing.
 - **Manual CRUD for Courses**: Add courses, toggle status (Active/Completed), and delete courses.
 - **Premium SaaS UI**: Light-themed landing page + dashboard built with Tailwind CSS.
 - **Secure Backend**: Express + SQLite with strict `CHECK` constraints.
@@ -17,6 +18,7 @@ An AI-enabled Learning Management System (LMS) dashboard that lets students mana
 ## Tech Stack
 - **Frontend**: Next.js 15, Tailwind CSS, Lucide React, Axios
 - **Backend**: Node.js, Express.js, SQLite3
+- **Authentication**: JWT, Bcrytjs
 - **AI**: Google Gemini API (custom multi-agent orchestration)
 - **Deployment**: Vercel (Frontend) + Render (Backend)
 
@@ -25,6 +27,15 @@ An AI-enabled Learning Management System (LMS) dashboard that lets students mana
 ### Prerequisites
 - Node.js v18+
 - Google Gemini API key
+
+### 1. Environment Setup
+Create a `.env` file in the `backend/` folder:
+
+```env
+GOOGLE_API_KEY="your_gemini_api_key"
+JWT_SECRET="your_secure_random_hex_string" 
+PORT=5000
+```
 
 ### Run Locally
 1. **Clone**
